@@ -55,12 +55,69 @@ docker push <DOCKER_HUB_ID>/front:latest
 
 ### 💡 도커 실행
 ---
-```bash
+```
 docker run --name front -d -p 80:80 <DOCKER_HUB_ID>/front
 ```
+
+<br/>
+
 <div id="2"></div>
 
 ## 2️⃣ BackEnd Setting
+
+### 💡 application.properties
+---
+```
+# ===============================
+# = DATA SOURCE
+# ===============================
+server.address=0.0.0.0
+
+spring.datasource.jdbc-url=jdbc:mysql://[주소]:3306/[DB명]?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+spring.datasource.username=
+spring.datasource.password=
+```
+
+### 💡 DockerFile로 이미지 만들기
+---
+```
+FROM openjdk:11-jdk
+
+ARG JAR_FILE=target/*.jar
+
+COPY ${JAR_FILE} app.jar
+
+EXPOSE 8080 # 포트번호
+
+ENTRYPOINT ["java","-jar","/app.jar"]
+```
+
+### 💡 도커 이미지 빌드
+---
+```
+docker build . -t back:0.1
+# -t : 도커 이미지 Tag명 -> 버전 관리 용도
+```
+
+### 💡 이미지 태그 추가 및 도커 허브 추가
+---
+```
+# 태그에 버전 작성
+docker tag back:0.1 back:latest
+
+# 사용자 name으로 tag 작성
+docker tag back:latest <DOCKER_HUB_ID>/back:latest
+
+# 이미지 푸시
+docker push <DOCKER_HUB_ID>/back:latest
+```
+
+### 💡 도커 실행
+---
+```
+docker run --name back -d -p 8080:8080 <DOCKER_HUB_ID>/back
+```
+
 
 <br/>
 
