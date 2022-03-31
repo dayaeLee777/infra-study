@@ -13,3 +13,4 @@
 ### 💡 Jenkins
 
 ### 💡 Nginx
+- [Nginx 기초](Nginx/Nginx기초.md)
